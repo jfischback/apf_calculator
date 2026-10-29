@@ -8,4 +8,5 @@ Plain HTML, CSS, and JavaScript with no build step. To deploy on Vercel, import 
 - `calc.js`: the calculation logic and the Table 1 APF list
 - `app.js`: connects the form to the calculation
 - `style.css`: the styles (from the OEMS Noise Reduction Calculator, plus the dropdown and table styles from the Enclosure Ventilation Calculator)
+- `disclaimer.css`, `disclaimer.js`: the first-visit disclaimer gate (agreement is saved in localStorage as `oems_disclaimer_v1`)
 - `tests/check.js`: test cases, run with `node tests/check.js`
