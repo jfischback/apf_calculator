@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Required APF Calculator | OEMS</title>
+  <meta name="description" content="Calculates the hazard ratio (exposure ÷ OEL), which is the minimum APF needed, and checks the selected respirator against its OSHA 1910.134 Table 1 APF.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <span class="brand-name">OEMS</span>
+        <span class="brand-full">Occupational Exposure Management Systems LLC</span>
+      </div>
+      <div class="tag">Exposure assessment tools for Health &amp; Safety Professionals</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>Required APF Calculator</h1>
+      <p class="lead">Calculates the hazard ratio (exposure ÷ OEL), which is the minimum APF needed, and checks the selected respirator against its OSHA 1910.134 Table&nbsp;1 APF.</p>
+    </section>
+
+    <div class="layout">
+      <form id="form" class="panel inputs" autocomplete="off" novalidate>
+        <div class="grid">
+          <div class="field">
+            <label class="name" for="contaminant">Contaminant</label>
+            <p class="hint">Name of the chemical or agent.</p>
+            <div class="box"><input id="contaminant" type="text"></div>
+          </div>
+          <div class="field">
+            <label class="name" for="exposure">Exposure concentration</label>
+            <p class="hint">Measured or estimated exposure, same averaging time as the OEL.</p>
+            <div class="box"><input id="exposure" type="number" inputmode="decimal" min="0" step="any"><span class="unit" data-unit></span></div>
+          </div>
+
+          <div class="field">
+            <label class="name" for="oel">Exposure limit (OEL)</label>
+            <p class="hint">OSHA PEL, ACGIH TLV or other limit the program uses.</p>
+            <div class="box"><input id="oel" type="number" inputmode="decimal" min="0" step="any"><span class="unit" data-unit></span></div>
+          </div>
+          <div class="field">
+            <label class="name" for="units">Units</label>
+            <p class="hint">Units for the exposure, OEL and IDLH.</p>
+            <div class="box select">
+              <select id="units">
+                <option value="ppm">ppm</option>
+                <option value="mg/m³">mg/m³</option>
+                <option value="f/cc">f/cc</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label class="name" for="respirator">Respirator type</label>
+            <p class="hint">Class and facepiece from the APF table below.</p>
+            <div class="box select">
+              <select id="respirator">
+                <option value="">Select respirator</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="name" for="idlh">IDLH <span class="opt">(optional)</span></label>
+            <p class="hint">NIOSH IDLH in the same units. Leave blank if none.</p>
+            <div class="box"><input id="idlh" type="number" inputmode="decimal" min="0" step="any" placeholder="None"><span class="unit" data-unit></span></div>
+          </div>
+          <div class="field spacer"></div>
+        </div>
+      </form>
+
+      <div class="outputs" aria-live="polite">
+        <section class="panel results out">
+          <div class="out-head"><p class="out-title">Hazard ratio</p><p class="pill" id="pill"></p></div>
+          <p class="out-sub" id="sub">Minimum APF needed = exposure ÷ OEL</p>
+          <p class="hero"><span id="hazardRatio"></span><span class="hero-unit">minimum APF needed</span></p>
+          <div class="min-row"><span class="small">Lowest Table 1 APF that meets it</span><span class="min" id="lowestApf"></span></div>
+          <div class="min-row"><span class="small">Selected respirator APF</span><span class="min" id="selectedApf"></span></div>
+          <div class="min-row"><span class="small">Result</span><span class="min result" id="result"></span></div>
+          <p class="note" id="note"></p>
+        </section>
+      </div>
+    </div>
+
+    <section class="panel steps">
+      <div class="out-head"><p class="out-title">OSHA assigned protection factors</p></div>
+      <p class="out-sub">29 CFR 1910.134, Table 1. The selected respirator is highlighted.</p>
+      <table class="step-table">
+        <thead><tr><th>Respirator class and facepiece</th><th class="apf">APF</th></tr></thead>
+        <tbody id="apfRows"></tbody>
+      </table>
+      <p class="source">Source: OSHA 29 CFR 1910.134(d)(3)(i)(A), Table 1, Assigned Protection Factors; 1910.134(d)(3)(i)(B), Maximum Use Concentration; 1910.134(d)(2), respirators for IDLH atmospheres. APR = air-purifying respirator; PAPR = powered air-purifying respirator; SAR = supplied-air (airline) respirator; SCBA = self-contained breathing apparatus. Filtering facepieces take the half mask APF of 10 (Table 1, note 2). Helmet/hood APF of 1,000 requires manufacturer WPF or SWPF test evidence at 1,000 or more; otherwise 25 (Table 1, note 4).</p>
+    </section>
+
+    <footer class="foot">
+      <p class="foot-lead">For informational purposes only. This is a free screening tool that supports a qualified professional's judgment. It is not a substitute for a written respiratory protection program or a qualified person's judgment. It is not legal, medical, engineering or compliance advice, and using it does not make OEMS anyone's consultant.</p>
+      <ol class="terms">
+        <li><strong>Results depend on your inputs.</strong> The tool assumes an accurate exposure concentration, an exposure limit with the same averaging time, and, if used, a correct IDLH, all in the same units. You are responsible for verifying every input. The tool does not account for measurement uncertainty, peak or short-term exposures, skin absorption, or multiple contaminants. A PASS compares the selected respirator's APF with the hazard ratio only.</li>
+        <li><strong>Not a compliance determination.</strong> APFs are from OSHA 29 CFR 1910.134, Table 1. Respirator selection must also consider IDLH conditions, oxygen deficiency, whether the cartridge or filter is suitable for the contaminant and its concentration, fit testing and medical clearance. A respiratory protection program also requires a written program, training, maintenance and recordkeeping. Regulations change and may be stricter in OSHA State Plan states, in other industries, or under contracts. OEMS is not affiliated with or endorsed by OSHA or NIOSH. Check the current standards that apply to you.</li>
+        <li><strong>No warranty; limitation of liability.</strong> The tool is provided "as is," without warranties of any kind, including accuracy, completeness or fitness for a particular purpose. To the fullest extent permitted by law, OEMS is not liable for any loss, injury, illness, penalty or damage arising from use of the tool or reliance on its results. You are responsible for how you use the results.</li>
+        <li><strong>Your data.</strong> All calculations run in your browser. OEMS does not receive or store anything you enter, and the page does not use cookies. Like most websites, the page is delivered by a hosting provider and loads its font from Google, which receive standard request information such as your IP address.</li>
+        <li><strong>Sources.</strong> OSHA 29 CFR 1910.134(d)(3)(i)(A), Table 1, Assigned Protection Factors; 1910.134(d)(3)(i)(B), Maximum Use Concentration; 1910.134(d)(2), respirators for IDLH atmospheres.</li>
+      </ol>
+      <p class="copyright">© 2026 Occupational Exposure Management Systems LLC. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <script src="calc.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
